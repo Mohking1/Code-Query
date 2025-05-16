@@ -1,0 +1,6 @@
+Flask
+flask-cors
+sentence-transformers
+torch
+chromadb
+nltk
