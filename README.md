@@ -1,78 +1,61 @@
-# 🚀 CodeQuery
+# CodeQuery
 
-**CodeQuery** is a powerful, fully-local, AI‑powered code search engine that helps you find exactly what you need in your codebase in seconds. Using a hybrid of vector embeddings, keyword matching, synonym expansion, and LLM-based query enrichment, CodeQuery delivers precise, context-aware search results without ever leaving your machine.
+Local code search engine and VS Code extension. Combines Tree-sitter AST parsing, dense embeddings (ChromaDB), and BM25 with Reciprocal Rank Fusion (RRF) for hybrid semantic and symbol search.
 
----
+## Features
 
-## 📖 Features
+- Multi-language AST chunking via Tree-sitter (Python, TypeScript, JavaScript, Go, Rust, Java, C, C++).
+- Hybrid retrieval: ChromaDB vector search + BM25Okapi/Plus fused with RRF.
+- Incremental indexing using SHA-256 file hashing and Watchdog file system observer.
+- VS Code extension with sidebar search webview, keyboard palette (`Ctrl+Alt+F`), and jump-to-definition in editor.
+- 100% local execution.
 
-* 🔍 **Semantic Vector Search**: Leverage embeddings to find code snippets by meaning, not just keywords.
-* 📝 **Keyword & Synonym Matching**: Fall back to exact keyword matching and WordNet‑powered synonym expansion for broader coverage.
-* 🤖 **LLM‑Enhanced Queries**: Enrich your search queries with a local LLM to capture intent and context.
-* 🔒 **Fully Local**: All processing—including model downloads—happens on your machine; zero data leaves your computer.
-* ⚡ **Fast & Interactive UI**: Browse and select from indexed codebases via a dropdown, then run queries in a sleek React frontend.
-* 📂 **Persistent Index**: Once you index a codebase, it’s stored and instantly available on subsequent runs.
+## Requirements
 
----
+- Python 3.10+
+- Node.js 18+
+- VS Code 1.75+
 
-> ⚠️ **First-run warning:**
-> The initial setup may take several minutes as embedding & language models are downloaded and cached.
+## Setup
 
----
-
-## 🛠️ Setup
-
-### 1. Clone the Repository
+### Backend
 
 ```bash
-git clone https://github.com/Mohking1/Code-Query
-cd codequery
-```
-
-### 2. Install Backend Dependencies
-
-```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Install Frontend Dependencies
+Run backend server manually:
 
 ```bash
-cd frontend
+python -m backend.main --port 8765
+```
+
+Run tests:
+
+```bash
+PYTHONPATH=. pytest backend/tests -v
+```
+
+### VS Code Extension
+
+```bash
+cd vscode-extension
 npm install
-cd ..
+npm run compile
 ```
 
----
-
-## 🚦 How to Use
-
-### 1. Start the Frontend
+To package the VSIX:
 
 ```bash
-cd frontend
-npm start
+npx @vscode/vsce package --allow-missing-repository
 ```
 
-### 2. Run the Backend
-
-In a new terminal from the project root:
+To install the extension in VS Code:
 
 ```bash
-python app.py
+code --install-extension vscode-extension/codequery-vscode-2.0.0.vsix
 ```
 
-### 3. Index Your Codebase
-
-* After running the backend, you’ll be prompted to enter the **absolute path** to your codebase.
-* The system will process and index the codebase.
-* Indexed paths will appear in a dropdown menu in the UI for quick selection.
-
-### 4. Search Your Codebase
-
-* Open your browser at `http://localhost:3000`
-* Select your project from the dropdown.
-* Enter a search query in natural language.
-* CodeQuery will return the most relevant code snippets based on vector and keyword matching.
-
----
+Or open the `vscode-extension` directory in VS Code and press `F5` to debug.

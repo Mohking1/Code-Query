@@ -1,0 +1,77 @@
+{
+  "name": "codequery-vscode",
+  "displayName": "CodeQuery - Semantic Code Search",
+  "description": "High-performance local semantic code search engine with Tree-sitter & Hybrid RRF",
+  "version": "2.0.0",
+  "publisher": "codequery",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codequery-explorer",
+          "title": "CodeQuery",
+          "icon": "icons/search-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "codequery-explorer": [
+        {
+          "type": "webview",
+          "id": "codequery.sidebarView",
+          "name": "CodeQuery Search"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "codequery.search",
+        "title": "CodeQuery: Search Codebase",
+        "category": "CodeQuery"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "codequery.search",
+        "key": "ctrl+alt+f",
+        "mac": "cmd+alt+f"
+      }
+    ],
+    "configuration": {
+      "title": "CodeQuery",
+      "properties": {
+        "codequery.serverPort": {
+          "type": "number",
+          "default": 8765,
+          "description": "Port for CodeQuery backend server."
+        },
+        "codequery.pythonPath": {
+          "type": "string",
+          "default": "python",
+          "description": "Python executable path for backend daemon."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.75.0",
+    "typescript": "^5.3.3"
+  }
+}
